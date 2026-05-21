@@ -1,93 +1,80 @@
 import Image from "next/image";
-import SiteHeader from "@/components/SiteHeader";
-import PrimaryActionButton from "@/components/PrimaryActionButton";
+import AppHeader from "@/components/layout/AppHeader";
+import Button from "@/components/ui/Button";
+import FigIcon from "@/components/ui/FigIcon";
 
 /**
- * Welcome page
- *
- * 1:1 implementation of Figma node 25:7 — "Welcome page" (1440 × 1024).
- * Layout summary (top-to-bottom, in a 1440 × 1024 frame):
- *   - SiteHeader (green strip, 1440 × 77, anchored at top)
- *   - image 4 background (1499 × 1066, x=-30, y=-42)
- *   - Title text "Welcome to The National Hotel Management Platform"
- *       (centred horizontally, top=117, width=609, 36px Montserrat ExtraBold)
- *   - Frame 16 (398 × 206, x=521, y=501) — three stacked CTA buttons
- *       with a 19px vertical gap.
+ * Welcome page — entry point of the National Hotel Booking Platform.
+ * Figma node 25:7. Refactored for full responsiveness:
+ *   • mobile (< md): stacked, full-bleed background under the header,
+ *     title + CTAs centred over the image
+ *   • desktop (≥ md): same composition at 1440 design width without
+ *     locking to a fixed canvas
  */
 export default function WelcomePage() {
   return (
-    <main
-      className="relative w-full min-h-screen bg-[#c4c4c4] overflow-hidden"
-      data-node-id="25:7"
-      data-name="Welcome page"
-    >
-      {/* Hero canvas — fixed Figma frame size (1440 × 1024) so absolute
-          coordinates from the design translate 1:1. The frame is centred
-          horizontally and the background image bleeds slightly beyond it
-          (1499 × 1066 at -30,-42) just like in Figma. */}
-      <div className="relative mx-auto h-[1024px] w-[1440px]">
-        {/* Background — Abuja skyline + hotel + travellers */}
+    <div className="flex min-h-screen flex-col bg-[#c4c4c4]">
+      <AppHeader />
+
+      <main className="relative isolate flex flex-1 items-start justify-center overflow-hidden">
+        {/* Hero background image — bleeds slightly beyond the viewport */}
         <div
-          className="absolute"
-          style={{ top: -42, left: -30, width: 1499, height: 1066 }}
-          data-node-id="42:428"
-          data-name="image 4"
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
         >
           <Image
             src="/figma/background.png"
             alt=""
             fill
             priority
-            sizes="1499px"
-            className="object-cover select-none pointer-events-none"
+            sizes="100vw"
+            className="object-cover object-center"
           />
+          <div className="absolute inset-0 bg-black/15 sm:bg-transparent" />
         </div>
 
-        {/* Top header strip */}
-        <div className="absolute top-0 left-0 w-[1440px]">
-          <SiteHeader />
-        </div>
+        <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center px-4 pb-16 pt-10 md:pt-[60px]">
+          <h1
+            className="max-w-[640px] text-center font-montserrat text-[28px] font-extrabold leading-tight tracking-brand-xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:text-[32px] md:text-[36px]"
+            data-node-id="25:33"
+          >
+            Welcome to The National Hotel Management Platform
+          </h1>
 
-        {/* Welcome title */}
-        <h1
-          className="absolute left-1/2 top-[117px] w-[609px] -translate-x-1/2 text-center font-montserrat text-[36px] font-extrabold leading-normal tracking-[0.54px] text-white"
-          data-node-id="25:33"
-          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.35)" }}
-        >
-          Welcome to The National Hotel Management Platform
-        </h1>
-
-        {/* CTA stack — Frame 16 */}
-        <div
-          className="absolute left-1/2 top-[501px] flex w-[398px] -translate-x-1/2 flex-col items-center gap-[19px]"
-          data-node-id="25:12"
-        >
-          <PrimaryActionButton
-            href="/register/nigerian"
-            label="Register As Nigerian"
-            iconSrc="/figma/identity-card.svg"
-            iconAlt=""
-            variant="green"
-            nodeId="25:13"
-          />
-          <PrimaryActionButton
-            href="/register/visitor"
-            label="Visitor / Foreigner Registration"
-            iconSrc="/figma/globe.svg"
-            iconAlt=""
-            variant="blue"
-            nodeId="25:20"
-          />
-          <PrimaryActionButton
-            href="/login"
-            label="Login"
-            iconSrc="/figma/lock.svg"
-            iconAlt=""
-            variant="navy"
-            nodeId="25:27"
-          />
+          <div
+            className="mt-[280px] flex w-full max-w-[398px] flex-col items-stretch gap-[19px] sm:mt-[320px] md:mt-[300px]"
+            data-node-id="25:12"
+          >
+            <Button
+              as="link"
+              href="/register/nigerian"
+              variant="primary"
+              fullWidth
+              leftIcon={<FigIcon src="/figma/identity-card.svg" size={24} />}
+            >
+              Register As Nigerian
+            </Button>
+            <Button
+              as="link"
+              href="/register/visitor"
+              variant="blue"
+              fullWidth
+              leftIcon={<FigIcon src="/figma/globe.svg" size={24} />}
+            >
+              Visitor / Foreigner Registration
+            </Button>
+            <Button
+              as="link"
+              href="/login"
+              variant="navy"
+              fullWidth
+              leftIcon={<FigIcon src="/figma/lock.svg" size={24} />}
+            >
+              Login
+            </Button>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
