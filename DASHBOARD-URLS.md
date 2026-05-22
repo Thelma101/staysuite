@@ -99,9 +99,26 @@ Replace with your production domain when deploying.
 
 ---
 
-## Hotel Owner Dashboard (up next)
+## Hotel Owner Dashboard
 
-Figma designs listed in `figmamcp.md` under **HOTEL OWNER MCP**.
+| Screen | Route | Flow |
+|--------|-------|------|
+| Welcome / Landing | `/owner` | → `/owner/register` or `/owner/login` |
+| Hotel Registration | `/owner/register` | Submit → `/owner/dashboard` |
+| Login | `/owner/login` | Hotel Admin / Staff Member tabs → `/owner/dashboard` |
+| Registration Status | `/owner/dashboard` | Pending approval view |
+| Bookings | `/owner/dashboard/bookings` | Bookings list (max 4 rows) |
+| Guests | `/owner/dashboard/guests` | Guests list (max 4 rows) |
+| Rooms | `/owner/dashboard/rooms` | Rooms list (max 4 rows) |
+| Payments | `/owner/dashboard/payments` | Payments list (max 4 rows) |
+| Store | `/owner/dashboard/store` | Store orders (max 4 rows) |
+| Staff Management | `/owner/dashboard/staff` | Staff list (max 4 rows) |
+| Hotel Information | `/owner/dashboard/hotel-info` | Hotel profile form |
+| Wallet | `/owner/dashboard/wallet` | Wallet overview |
+
+**Auth flow:** `/owner/login` → `/owner/dashboard`  
+**Registration flow:** `/owner/register` → `/owner/dashboard` (pending approval)  
+**Logout:** sidebar → `/owner/login`
 
 ---
 
@@ -116,5 +133,7 @@ Figma designs listed in `figmamcp.md` under **HOTEL OWNER MCP**.
 /greenlunar/login          Green Lunar login
 /greenlunar/financials     Green Lunar financials
 /ntda-auth/login           NTDA admin login
-/ntda/dashboard            NTDA admin home
+/owner                     Hotel owner welcome
+/owner/login               Hotel owner login
+/owner/dashboard           Hotel owner dashboard
 ```
