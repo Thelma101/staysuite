@@ -1,6 +1,8 @@
 # StaySuite Dashboard URLs
 
-Base URL (local dev): `http://localhost:3230`
+> **Note:** NTDA and Green Lunar now run as standalone apps in `NTDA/` and `GreenLunar/`. See each folder's README for ports and routes.
+
+Base URL (legacy monolith, local dev): `http://localhost:3230`
 
 Replace with your production domain when deploying.
 
@@ -65,11 +67,11 @@ Replace with your production domain when deploying.
 
 ---
 
-## Green Lunar Dashboard
+## Green Lunar Dashboard (standalone: `GreenLunar/` — port **3232**)
 
 | Screen | Route | Flow |
 |--------|-------|------|
-| Login | `/greenlunar/login` | → `/greenlunar/financials` |
+| Login | http://localhost:3232/greenlunar/login | → `/greenlunar/financials` |
 | Forgot Password | `/greenlunar/forgot-password` | Email → OTP → Reset → `/greenlunar/login` |
 | Financials (main) | `/greenlunar/financials` | Withdraw modal (account → amount → success), transaction detail modal |
 | Email Template Preview | `/greenlunar/email-template` | Password reset email preview |
@@ -80,11 +82,11 @@ Replace with your production domain when deploying.
 
 ---
 
-## NTDA Admin Dashboard
+## NTDA Admin Dashboard (standalone: `NTDA/` — port **3231**)
 
 | Screen | Route | Flow |
 |--------|-------|------|
-| Login | `/ntda-auth/login` | → `/ntda/dashboard` |
+| Login | http://localhost:3231/ntda-auth/login | → `/ntda/dashboard` |
 | Forgot Password | `/ntda-auth/forgot-password` | Email → OTP → Reset → `/ntda-auth/login` |
 | Home | `/ntda/dashboard` | Quick links to approvals, broadcast, transactions |
 | Hotels | `/ntda/hotels` | View / manage hotels |
