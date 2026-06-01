@@ -19,7 +19,13 @@ export type TransactionRecord = {
 
 export async function fetchWalletSummary(): Promise<WalletSummary> {
   if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
-    return { balance: "₦0.00", pendingSettlement: "₦0.00" };
+    return {
+      balance: "0",
+      pendingSettlement: "0",
+      totalCharges: "0",
+      transactionVolume: "0",
+      totalWithdrawal: "0",
+    };
   }
   return apiRequest<WalletSummary>("/greenlunar/wallet");
 }

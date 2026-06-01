@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
@@ -50,7 +51,15 @@ function MenuIcon() {
 
 type WithdrawStep = "account" | "amount" | "success";
 
-function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose: () => void }) {
+function Sidebar({
+  mobileOpen,
+  onClose,
+  onLogout,
+}: {
+  mobileOpen: boolean;
+  onClose: () => void;
+  onLogout: () => void;
+}) {
   const content = (
     <nav className="flex h-full flex-col">
       <div className="flex items-center gap-3 px-5 py-6">
@@ -59,7 +68,7 @@ function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose: () => 
         </div>
         <span className="font-montserrat text-sm font-bold text-brand-ink">Green Lunar</span>
       </div>
-      <div className="mt-4 flex flex-col gap-1 px-3">
+      <div className="mt-4 flex flex-1 flex-col gap-1 px-3">
         <Link
           href="/greenlunar/financials"
           onClick={onClose}
@@ -68,6 +77,13 @@ function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; onClose: () => 
           <WalletIcon />
           <span className="text-sm font-semibold">Financial</span>
         </Link>
+        <button
+          type="button"
+          onClick={onLogout}
+          className="mt-auto px-4 py-3 text-left text-sm font-medium text-red-500 hover:bg-red-50"
+        >
+          Log Out
+        </button>
       </div>
     </nav>
   );
@@ -120,6 +136,7 @@ function TopBar({ onMenuClick }: { onMenuClick: () => void }) {
 }
 
 export default function GreenLunarFinancialsPage() {
+  const router = useRouter();
   const [navOpen, setNavOpen] = useState(false);
   const [wallet, setWallet] = useState<WalletSummary | null>(null);
   const [transactions, setTransactions] = useState<TransactionRecord[]>([]);
@@ -171,16 +188,20 @@ export default function GreenLunarFinancialsPage() {
 
   const statCards = wallet
     ? [
-        { label: "Available Balance", value: wallet.balance },
-        { label: "Pending Settlement", value: wallet.pendingSettlement },
-        { label: "Total Charges", value: wallet.totalCharges ?? "₦0" },
-        { label: "Transaction Volume", value: wallet.transactionVolume ?? "0" },
+        { label: "Total Charges Collected (NGN)", value: wallet.totalCharges ?? "0", currency: true },
+        { label: "Transaction Volume", value: wallet.transactionVolume ?? "0", currency: false },
+        { label: "Total Withdrawal", value: wallet.totalWithdrawal ?? "0", currency: true },
+        { label: "Available Balance", value: wallet.balance, currency: true },
       ]
     : [];
 
   return (
     <div className="flex min-h-screen bg-[#f7f9fb]">
-      <Sidebar mobileOpen={navOpen} onClose={() => setNavOpen(false)} />
+      <Sidebar
+        mobileOpen={navOpen}
+        onClose={() => setNavOpen(false)}
+        onLogout={() => router.push("/greenlunar/login")}
+      />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar onMenuClick={() => setNavOpen(true)} />
         <main className="flex-1 px-4 py-6 md:px-7 md:py-8">
@@ -193,7 +214,11 @@ export default function GreenLunarFinancialsPage() {
                   <div key={stat.label} className="flex flex-col gap-2 rounded-[10px] bg-white p-5 shadow-sm">
                     <p className="text-xs font-medium text-muted">{stat.label}</p>
                     <p className="text-xl font-bold text-brand-ink">
-                      <Naira>{stat.value.replace(/^₦/, "")}</Naira>
+                      {stat.currency ? (
+                        <Naira>{stat.value.replace(/^₦/, "")}</Naira>
+                      ) : (
+                        stat.value
+                      )}
                     </p>
                   </div>
                 ))}

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Field from "@/components/ui/Field";
+import { validateEmail, validatePassword } from "@/lib/validation";
 
 function EyeIcon({ open }: { open: boolean }) {
   if (open) {
@@ -32,16 +33,27 @@ export default function GreenLunarLoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const emailCheck = validateEmail(email);
+    const passwordCheck = validatePassword(password);
+    if (!emailCheck.ok) {
+      setError(emailCheck.message);
+      return;
+    }
+    if (!passwordCheck.ok) {
+      setError(passwordCheck.message);
+      return;
+    }
+    setError(null);
     router.push("/greenlunar/financials");
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f4f8f6] px-4 py-10">
       <div className="w-full max-w-[440px]">
-        {/* Logo */}
         <div className="mb-8 flex justify-center">
           <div className="flex size-[131px] items-center justify-center rounded-full bg-brand-green">
             <span className="text-center font-montserrat text-lg font-bold leading-tight text-white">
@@ -52,7 +64,6 @@ export default function GreenLunarLoginPage() {
           </div>
         </div>
 
-        {/* Card */}
         <div
           className="rounded-[8px] bg-white px-8 py-10"
           style={{ boxShadow: "0px 8px 8px rgba(217,217,217,0.27)" }}
@@ -62,6 +73,11 @@ export default function GreenLunarLoginPage() {
           </h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            {error && (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
             <Field label="Email Address" htmlFor="gl-email">
               <Input
                 id="gl-email"

@@ -11,14 +11,14 @@ npm run dev
 
 Open http://localhost:3232/greenlunar/login
 
-## Routes
+## Routes (Figma-aligned)
 
 | Screen | Path |
 |--------|------|
 | Login | `/greenlunar/login` |
-| Forgot password | `/greenlunar/forgot-password` |
-| Financials | `/greenlunar/financials` |
-| Email template preview | `/greenlunar/email-template` |
+| Forgot password (email → link sent → reset → done) | `/greenlunar/forgot-password` |
+| Financials (stats, balance banner, withdraw + tx modals) | `/greenlunar/financials` |
+| Reset email template preview | `/greenlunar/email-template` |
 
 ## Configuration
 
